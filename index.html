@@ -1,6 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Schild Org. Flyer</title>
     
     <meta property="og:title" content="Schild Org. Flyer">
@@ -10,20 +12,101 @@
     <meta name="twitter:card" content="summary_large_image">
 
     <style>
-        /* Your existing styles are fine, but let's make the button bigger for mobile thumbs */
-        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f4f9; }
-        img { max-width: 90%; height: auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        button { 
-            margin-top: 20px; 
-            padding: 15px 40px; 
-            font-size: 18px; 
+        * { box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, system-ui, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            background-color: #f0f2f5; 
+        }
+
+        /* The container that holds both the image and the button */
+        .flyer-container {
+            position: relative;
+            max-width: 90%;
+            display: inline-block;
+        }
+
+        img { 
+            display: block;
+            width: 100%; 
+            height: auto; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15); 
+        }
+
+        /* Positioned at the top right of the flyer-container */
+        #shareButton { 
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 10px 20px; 
+            font-size: 14px; 
             font-weight: bold;
             background-color: #007bff; 
             color: white; 
             border: none; 
-            border-radius: 50px; 
+            border-radius: 30px; 
             cursor: pointer; 
-            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s active;
+            z-index: 10;
+        }
+
+        #shareButton:active {
+            transform: scale(0.92);
+            background-color: #0056b3;
+        }
+
+        /* Subtle label below the image */
+        .footer-text {
+            margin-top: 15px;
+            color: #65676b;
+            font-size: 14px;
         }
     </style>
 </head>
+<body>
+
+    <div class="flyer-container">
+        <img src="flyer.png" alt="Schild Org. Flyer">
+        
+        <button id="shareButton">Share</button>
+    </div>
+
+    <p class="footer-text">Schild Org. © 2026</p>
+
+    <script>
+        const shareBtn = document.getElementById('shareButton');
+
+        shareBtn.addEventListener('click', async () => {
+            const shareData = {
+                title: 'Schild Org. Flyer',
+                text: 'Check out this flyer from Schild Org!',
+                url: window.location.href 
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    console.log('Share cancelled or failed:', err);
+                }
+            } else {
+                // Fallback: Copy link to clipboard
+                try {
+                    await navigator.clipboard.writeText(window.location.href);
+                    alert("Link copied to clipboard!");
+                } catch (err) {
+                    alert("Sharing is not supported on this browser.");
+                }
+            }
+        });
+    </script>
+</body>
+</html>
