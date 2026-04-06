@@ -6,106 +6,102 @@
     <title>Schild Org. Flyer</title>
     
     <meta property="og:title" content="Schild Org. Flyer">
-    <meta property="og:description" content="Check out our latest flyer!">
     <meta property="og:image" content="https://schild-org.github.io/flyer/flyer.png">
     <meta property="og:url" content="https://schild-org.github.io/flyer/">
-    <meta name="twitter:card" content="summary_large_image">
 
     <style>
         * { box-sizing: border-box; }
         
-        body { 
-            font-family: -apple-system, system-ui, sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            min-height: 100vh; 
+        body, html { 
             margin: 0; 
-            background-color: #f0f2f5; 
-        }
-
-        /* The container that holds both the image and the button */
-        .flyer-container {
-            position: relative;
-            max-width: 90%;
-            display: inline-block;
-        }
-
-        img { 
-            display: block;
+            padding: 0; 
             width: 100%; 
-            height: auto; 
-            border-radius: 12px; 
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15); 
+            height: 100%; 
+            background-color: #000; /* Dark background looks better with no padding */
+            overflow: hidden; /* Prevents accidental scrolling */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Positioned at the top right of the flyer-container */
-        #shareButton { 
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 10px 20px; 
-            font-size: 14px; 
+        /* The Image: No padding, full width */
+        .flyer-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; /* Ensures the whole flyer is visible without cropping */
+        }
+
+        /* Container for the fixed buttons at the bottom right */
+        .button-group {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .btn { 
+            padding: 14px 20px; 
+            font-size: 15px; 
             font-weight: bold;
-            background-color: #007bff; 
             color: white; 
             border: none; 
-            border-radius: 30px; 
+            border-radius: 50px; 
             cursor: pointer; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.2s active;
-            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
         }
 
-        #shareButton:active {
-            transform: scale(0.92);
-            background-color: #0056b3;
+        /* Main Share Button */
+        #shareBtn { background-color: #007bff; }
+
+        /* Instagram Story Button */
+        #instaBtn { 
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
         }
 
-        /* Subtle label below the image */
-        .footer-text {
-            margin-top: 15px;
-            color: #65676b;
-            font-size: 14px;
-        }
+        .btn:active { transform: scale(0.95); opacity: 0.9; }
     </style>
 </head>
 <body>
 
-    <div class="flyer-container">
-        <img src="flyer.png" alt="Schild Org. Flyer">
+    <img src="flyer.png" alt="Schild Org. Flyer" class="flyer-img">
+
+    <div class="button-group">
+        <a href="instagram://story-camera" id="instaBtn" class="btn">Add to Story</a>
         
-        <button id="shareButton">Share</button>
+        <button id="shareBtn" class="btn">Share Link</button>
     </div>
 
-    <p class="footer-text">Schild Org. © 2026</p>
-
     <script>
-        const shareBtn = document.getElementById('shareButton');
-
+        // General Share Logic
+        const shareBtn = document.getElementById('shareBtn');
         shareBtn.addEventListener('click', async () => {
-            const shareData = {
-                title: 'Schild Org. Flyer',
-                <!--text: 'Check out this flyer from Schild Org!',-->
-                url: window.location.href 
-            };
-
             if (navigator.share) {
                 try {
-                    await navigator.share(shareData);
-                } catch (err) {
-                    console.log('Share cancelled or failed:', err);
-                }
+                    await navigator.share({
+                        title: 'Schild Org. Flyer',
+                        url: window.location.href 
+                    });
+                } catch (err) { console.log('Error:', err); }
             } else {
-                // Fallback: Copy link to clipboard
-                try {
-                    await navigator.clipboard.writeText(window.location.href);
-                    alert("Link copied to clipboard!");
-                } catch (err) {
-                    alert("Sharing is not supported on this browser.");
-                }
+                navigator.clipboard.writeText(window.location.href);
+                alert("Link copied!");
             }
+        });
+
+        // Instagram Logic
+        const instaBtn = document.getElementById('instaBtn');
+        instaBtn.addEventListener('click', (e) => {
+            // If on desktop or app not installed, fallback to Instagram web
+            setTimeout(() => {
+                window.location.href = "https://www.instagram.com/";
+            }, 500);
         });
     </script>
 </body>
