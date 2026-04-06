@@ -1,42 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schild Org. Flyer</title>
+    
+    <meta property="og:title" content="Schild Org. Flyer">
+    <meta property="og:description" content="Check out our latest flyer!">
+    <meta property="og:image" content="https://schild-org.github.io/flyer/flyer.png">
+    <meta property="og:url" content="https://schild-org.github.io/flyer/">
+    <meta name="twitter:card" content="summary_large_image">
+
     <style>
-        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #f4f4f9; }
+        /* Your existing styles are fine, but let's make the button bigger for mobile thumbs */
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f4f9; }
         img { max-width: 90%; height: auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        button { margin-top: 20px; padding: 12px 24px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        button:hover { background-color: #0056b3; }
+        button { 
+            margin-top: 20px; 
+            padding: 15px 40px; 
+            font-size: 18px; 
+            font-weight: bold;
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
     </style>
 </head>
-<body>
-
-    <img src="flyer.png" alt="Schild Org. Flyer">
-
-    <button id="shareButton">Share</button>
-
-    <script>
-        const shareBtn = document.getElementById('shareButton');
-
-        shareBtn.addEventListener('click', async () => {
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'Check out this image!',
-                        text: 'I wanted to share this with you.',
-                        url: window.location.href // Shares the link to this page
-                    });
-                    console.log('Shared successfully');
-                } catch (err) {
-                    console.log('Error sharing:', err);
-                }
-            } else {
-                // Fallback for browsers that don't support native share
-                alert("Web Share is not supported on this browser. You can copy the URL to share!");
-            }
-        });
-    </script>
-</body>
-</html>
